@@ -10,13 +10,62 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+      <style>
+            tr.spaceUnder>td {
+                  padding-bottom: 1em;
+            }
+      </style>
 </head>
 <body>
       <div class="container" style="margin-top: 40px;">
-      <a href="add.php" class="btn btn-sm btn-success">Add book</a>
+      <div style="float: right;">
+      <!-- <a href="add.php" class="btn btn-sm btn-success">Add book</a> -->
+      <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAddBook">
+      Add book
+      </button>
       <form action="index.php" method="POST" style="display: inline;">
             <input type="submit" name="reset" value="Reset" class="btn btn-sm btn-warning">
       </form>
+      </div>
+
+      <!-- Modal -->
+		<div class="modal fade" id="modalAddBook" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document" style="max-width: 28%;">
+				<div class="modal-content" style="height: 200px;">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Add a new book</h5>
+					</div>
+					<div class="modal-body">
+                              <form action="index.php" method="POST">
+                                    <table>
+                                    <tr>
+                                          <td>Book Title: </td>
+                                          <td><input type="text" name="booktitle"></td>
+                                    </tr>
+                                    <tr>
+                                          <td>Book Author: </td>
+                                          <td><input type="text" name="bookauthor"></td>
+                                    </tr>
+                                    <tr class="spaceUnder">
+                                          <td style="padding-right: 15px;">Book Pages: </td>
+                                          <td><input type="number" name="bookpages"></td>
+                                    </tr>
+                                    </table>
+                                    <table align="right">
+                                    <tr>
+                                          <td style="padding-right: 5px;"><button type="button" class="btn btn-warning btn-sm" 
+                                          data-dismiss="modal" style="width: 100px;">Cancel</button></td>
+                                          <td><button type="submit" class="btn btn-info btn-sm"
+							style="width: 100px;">Create</button></td>
+                                    </tr>
+                                    </table>
+                              </form>
+					</div>
+				</div>
+			</div>
+		</div>
+
       <br>
       <?php
             if (!isset($_SESSION['numBook'])) {
@@ -64,6 +113,7 @@
                         <th>Edit</th>
                         <th>Delete</th>
                   </thead>
+                  <tbody>
 
       <?php
             for ($y = 1; $y <= $_SESSION['numBook']; $y++) {
@@ -73,7 +123,6 @@
                         // echo "Book $y: ";
                         echo 
                         "
-                              <tbody>
                                     <tr>
                                           <td>$y</td>
                         ";
@@ -100,10 +149,12 @@
                         echo 
                         "
                                     </tr>
-                              </tbody>
                         ";
                   }
             };
+      ?>
+
+      <?php
 
             if (isset($_POST['delete'])) {
                   $id = $_POST['delete'];
@@ -124,6 +175,7 @@
                   echo "<meta http-equiv='refresh' content='0'>";
             }
       ?>
+      </div>
       </div>
 </body>
 </html>
