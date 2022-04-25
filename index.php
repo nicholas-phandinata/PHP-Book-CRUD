@@ -32,27 +32,28 @@
 		<div class="modal fade" id="modalAddBook" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document" style="max-width: 28%;">
-				<div class="modal-content" style="height: 200px;">
+				<div class="modal-content" style="height: 250px;">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Add a new book</h5>
+						<h4 class="modal-title" id="exampleModalLabel">Add a new book</h4>
 					</div>
 					<div class="modal-body">
+                              <div class="container-sm">
                               <form action="index.php" method="POST">
                                     <table>
-                                    <tr>
-                                          <td>Book Title: </td>
-                                          <td><input type="text" name="booktitle"></td>
-                                    </tr>
-                                    <tr>
-                                          <td>Book Author: </td>
-                                          <td><input type="text" name="bookauthor"></td>
+                                    <tr class="spaceUnder">
+                                          <td style="padding-right: 25px;">Book Title: </td>
+                                          <td><input type="text" name="booktitle" size="45"></td>
                                     </tr>
                                     <tr class="spaceUnder">
-                                          <td style="padding-right: 15px;">Book Pages: </td>
-                                          <td><input type="number" name="bookpages"></td>
+                                          <td>Book Author: </td>
+                                          <td><input type="text" name="bookauthor" size="30"></td>
+                                    </tr>
+                                    <tr class="spaceUnder">
+                                          <td>Book Pages: </td>
+                                          <td><input type="number" name="bookpages" style="width: 5em"></td>
                                     </tr>
                                     </table>
-                                    <table align="right">
+                                    <table style="float: right; margin-top: 12px;">
                                     <tr>
                                           <td style="padding-right: 5px;"><button type="button" class="btn btn-warning btn-sm" 
                                           data-dismiss="modal" style="width: 100px;">Cancel</button></td>
@@ -61,6 +62,7 @@
                                     </tr>
                                     </table>
                               </form>
+                              </div>
 					</div>
 				</div>
 			</div>
