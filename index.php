@@ -136,10 +136,59 @@
                               if ($x < count($bookSubject)-1) {
                                     echo "<td>$bookInfo</td>";
                               } else {
+                                    $subjectAuthor = $bookSubject[$x-1];
+                                    $subjectTitle = $bookSubject[$x-2];
+                                    $bookInfoTitle = $$getBookNum->$subjectTitle;
+                                    $bookInfoAuthor = $$getBookNum->$subjectAuthor;
+                                    $bookInfoPages = $bookInfo;
+                                    $id = $y - 1;
                                     echo 
                                     "
-                                          <td>$bookInfo</td>
-                                          <td><a href='update.php?bookId=$y' class='btn btn-sm btn-info'>Edit</a></td>
+                                          <td>$bookInfoPages</td>
+                                          <td>
+                                          <button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#modalEditBook$id'>
+                                          Edit
+                                          </button>
+                                          <div class='modal fade' id='modalEditBook$id' tabindex='-1'
+                                          role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                          <div class='modal-dialog' role='document' style='max-width: 28%;'>
+                                                <div class='modal-content' style='height: 250px;'>
+                                                      <div class='modal-header'>
+                                                            <h4 class='modal-title' id='exampleModalLabel'>Edit Book $y $id $getBookNum</h4>
+                                                      </div>
+                                                      <div class='modal-body'>
+                                                      <div class='container-sm'>
+                                                      <form action='index.php' method='POST'>
+                                                            <input type='hidden' name='updatebookid' value='$id'>
+                                                            <table>
+                                                            <tr class='spaceUnder'>
+                                                                  <td style='padding-right: 25px;'>Book Title: </td>
+                                                                  <td><input type='text' name='updatebooktitle' size='45' value='$bookInfoTitle'></td>
+                                                            </tr>
+                                                            <tr class='spaceUnder'>
+                                                                  <td>Book Author: </td>
+                                                                  <td><input type='text' name='updatebookauthor' size='30' value='$bookInfoAuthor'></td>
+                                                            </tr>
+                                                            <tr class='spaceUnder'>
+                                                                  <td>Book Pages: </td>
+                                                                  <td><input type='number' name='updatebookpages' style='width: 5em' value='$bookInfoPages'></td>
+                                                            </tr>
+                                                            </table>
+                                                            <table style='float: right; margin-top: 12px;'>
+                                                            <tr>
+                                                                  <td style='padding-right: 5px;'><button type='button' class='btn btn-warning btn-sm' 
+                                                                  data-dismiss='modal' style='width: 100px;'>Cancel</button></td>
+                                                                  <td><button type='submit' class='btn btn-info btn-sm'
+                                                                  style='width: 100px;'>Update</button></td>
+                                                            </tr>
+                                                            </table>
+                                                      </form>
+                                                      </div>
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          </div>
+                                          </td>
                                           <td><form method='post'>
                                                 <input type='hidden' name='delete' value='$y'>
                                                 <input type='submit' value='delete' class='btn btn-sm btn-danger'>
