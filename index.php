@@ -24,6 +24,9 @@
       Add book
       </button>
       <form action="index.php" method="POST" style="display: inline;">
+            <input type="submit" name="deleteAll" value="Delete All" class="btn btn-sm btn-danger">
+      </form>
+      <form action="index.php" method="POST" style="display: inline;">
             <input type="submit" name="reset" value="Reset" class="btn btn-sm btn-warning">
       </form>
       </div>
@@ -68,7 +71,7 @@
 			</div>
 		</div>
 
-      <br>
+      <br><br>
       <?php
             if (!isset($_SESSION['numBook'])) {
                   $_SESSION['numBook'] = 3;
@@ -154,7 +157,7 @@
                                           <div class='modal-dialog' role='document' style='max-width: 28%;'>
                                                 <div class='modal-content' style='height: 250px;'>
                                                       <div class='modal-header'>
-                                                            <h4 class='modal-title' id='exampleModalLabel'>Edit Book $y $id $getBookNum</h4>
+                                                            <h4 class='modal-title' id='exampleModalLabel'>Edit Book</h4>
                                                       </div>
                                                       <div class='modal-body'>
                                                       <div class='container-sm'>
@@ -214,6 +217,14 @@
                   unset($_SESSION['title'][$id-1]);
                   unset($_SESSION['author'][$id-1]);
                   unset($_SESSION['pages'][$id-1]);
+                  echo "<meta http-equiv='refresh' content='0'>";
+            }
+
+            if (isset($_POST['deleteAll'])) {
+                  $_SESSION['bookArray'] = array();
+                  $_SESSION['title'] = array();
+                  $_SESSION['author'] = array();
+                  $_SESSION['pages'] = array();
                   echo "<meta http-equiv='refresh' content='0'>";
             }
 
