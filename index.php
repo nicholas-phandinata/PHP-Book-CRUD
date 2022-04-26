@@ -18,6 +18,7 @@
 </head>
 <body>
       <div class="container" style="margin-top: 40px;">
+
       <div style="float: right;">
       <!-- <a href="add.php" class="btn btn-sm btn-success">Add book</a> -->
       <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalAddBook">
@@ -28,6 +29,13 @@
       </form>
       <form action="index.php" method="POST" style="display: inline;">
             <input type="submit" name="reset" value="Reset" class="btn btn-sm btn-warning">
+      </form>
+      </div>
+      
+      <div style="margin-left: 20px;">
+      <form action="index.php" method="POST">
+            <input type="text" name="keyword" placeholder="Search here" size="45">
+            <input type="submit" name="Submit" value="Search" class="btn btn-sm btn-info">
       </form>
       </div>
 
@@ -71,7 +79,7 @@
 			</div>
 		</div>
 
-      <br><br>
+      <br>
       <?php
             if (!isset($_SESSION['numBook'])) {
                   $_SESSION['numBook'] = 3;
@@ -122,88 +130,177 @@
 
       <?php
             for ($y = 1; $y <= $_SESSION['numBook']; $y++) {
-                  $getBookNum = $_SESSION['bookArray'][$y-1];
-                  if ($getBookNum) {
-                        $$getBookNum = new Book;
-                        // echo "Book $y: ";
-                        echo 
-                        "
+                  if (!isset($_SESSION['matches'])) {
+                        $getBookNum = $_SESSION['bookArray'][$y-1];
+                        if ($getBookNum) {
+                              $$getBookNum = new Book;
+                              // echo "Book $y: ";
+                              echo 
+                              "
                                     <tr>
                                           <td>$y</td>
-                        ";
-                        for ($x = 0; $x < count($bookSubject); $x++) {
-                              $subject = $bookSubject[$x];
-                              // $whichBook = 'book'.$y; //concatenate string with int
-                              $$getBookNum->$subject = $_SESSION[$subject][$y-1];
-                              $bookInfo = $$getBookNum->$subject;
-                              if ($x < count($bookSubject)-1) {
-                                    echo "<td>$bookInfo</td>";
-                              } else {
-                                    $subjectAuthor = $bookSubject[$x-1];
-                                    $subjectTitle = $bookSubject[$x-2];
-                                    $bookInfoTitle = $$getBookNum->$subjectTitle;
-                                    $bookInfoAuthor = $$getBookNum->$subjectAuthor;
-                                    $bookInfoPages = $bookInfo;
-                                    $id = $y - 1;
-                                    echo 
-                                    "
-                                          <td>$bookInfoPages</td>
-                                          <td>
-                                          <button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#modalEditBook$id'>
-                                          Edit
-                                          </button>
-                                          <div class='modal fade' id='modalEditBook$id' tabindex='-1'
-                                          role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
-                                          <div class='modal-dialog' role='document' style='max-width: 28%;'>
-                                                <div class='modal-content' style='height: 250px;'>
-                                                      <div class='modal-header'>
-                                                            <h4 class='modal-title' id='exampleModalLabel'>Edit Book</h4>
-                                                      </div>
-                                                      <div class='modal-body'>
-                                                      <div class='container-sm'>
-                                                      <form action='index.php' method='POST'>
-                                                            <input type='hidden' name='updatebookid' value='$id'>
-                                                            <table>
-                                                            <tr class='spaceUnder'>
-                                                                  <td style='padding-right: 25px;'>Book Title: </td>
-                                                                  <td><input type='text' name='updatebooktitle' size='45' value='$bookInfoTitle'></td>
-                                                            </tr>
-                                                            <tr class='spaceUnder'>
-                                                                  <td>Book Author: </td>
-                                                                  <td><input type='text' name='updatebookauthor' size='30' value='$bookInfoAuthor'></td>
-                                                            </tr>
-                                                            <tr class='spaceUnder'>
-                                                                  <td>Book Pages: </td>
-                                                                  <td><input type='number' name='updatebookpages' style='width: 5em' value='$bookInfoPages'></td>
-                                                            </tr>
-                                                            </table>
-                                                            <table style='float: right; margin-top: 12px;'>
-                                                            <tr>
-                                                                  <td style='padding-right: 5px;'><button type='button' class='btn btn-warning btn-sm' 
-                                                                  data-dismiss='modal' style='width: 100px;'>Cancel</button></td>
-                                                                  <td><button type='submit' class='btn btn-info btn-sm'
-                                                                  style='width: 100px;'>Update</button></td>
-                                                            </tr>
-                                                            </table>
-                                                      </form>
-                                                      </div>
+                              ";
+                              for ($x = 0; $x < count($bookSubject); $x++) {
+                                    $subject = $bookSubject[$x];
+                                    // $whichBook = 'book'.$y; //concatenate string with int
+                                    $$getBookNum->$subject = $_SESSION[$subject][$y-1];
+                                    $bookInfo = $$getBookNum->$subject;
+                                    if ($x < count($bookSubject)-1) {
+                                          echo "<td>$bookInfo</td>";
+                                    } else {
+                                          $subjectAuthor = $bookSubject[$x-1];
+                                          $subjectTitle = $bookSubject[$x-2];
+                                          $bookInfoTitle = $$getBookNum->$subjectTitle;
+                                          $bookInfoAuthor = $$getBookNum->$subjectAuthor;
+                                          $bookInfoPages = $bookInfo;
+                                          $id = $y - 1;
+                                          echo 
+                                          "
+                                                <td>$bookInfoPages</td>
+                                                <td>
+                                                <button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#modalEditBook$id'>
+                                                Edit
+                                                </button>
+                                                <div class='modal fade' id='modalEditBook$id' tabindex='-1'
+                                                role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                                <div class='modal-dialog' role='document' style='max-width: 28%;'>
+                                                      <div class='modal-content' style='height: 250px;'>
+                                                            <div class='modal-header'>
+                                                                  <h4 class='modal-title' id='exampleModalLabel'>Edit Book</h4>
+                                                            </div>
+                                                            <div class='modal-body'>
+                                                            <div class='container-sm'>
+                                                            <form action='index.php' method='POST'>
+                                                                  <input type='hidden' name='updatebookid' value='$id'>
+                                                                  <table>
+                                                                  <tr class='spaceUnder'>
+                                                                        <td style='padding-right: 25px;'>Book Title: </td>
+                                                                        <td><input type='text' name='updatebooktitle' size='45' value='$bookInfoTitle'></td>
+                                                                  </tr>
+                                                                  <tr class='spaceUnder'>
+                                                                        <td>Book Author: </td>
+                                                                        <td><input type='text' name='updatebookauthor' size='30' value='$bookInfoAuthor'></td>
+                                                                  </tr>
+                                                                  <tr class='spaceUnder'>
+                                                                        <td>Book Pages: </td>
+                                                                        <td><input type='number' name='updatebookpages' style='width: 5em' value='$bookInfoPages'></td>
+                                                                  </tr>
+                                                                  </table>
+                                                                  <table style='float: right; margin-top: 12px;'>
+                                                                  <tr>
+                                                                        <td style='padding-right: 5px;'><button type='button' class='btn btn-warning btn-sm' 
+                                                                        data-dismiss='modal' style='width: 100px;'>Cancel</button></td>
+                                                                        <td><button type='submit' class='btn btn-info btn-sm'
+                                                                        style='width: 100px;'>Update</button></td>
+                                                                  </tr>
+                                                                  </table>
+                                                            </form>
+                                                            </div>
+                                                            </div>
                                                       </div>
                                                 </div>
-                                          </div>
-                                          </div>
-                                          </td>
-                                          <td><form method='post'>
-                                                <input type='hidden' name='delete' value='$y'>
-                                                <input type='submit' value='delete' class='btn btn-sm btn-danger'>
-                                              </form>
-                                          </td>
+                                                </div>
+                                                </td>
+                                                <td><form method='post'>
+                                                      <input type='hidden' name='delete' value='$y'>
+                                                      <input type='submit' value='delete' class='btn btn-sm btn-danger'>
+                                                </form>
+                                                </td>
+                                          ";
+                                    }
+                              }
+                              echo 
+                              "
+                                          </tr>
+                              ";
+                        }
+                  } else {
+                        foreach($_SESSION['matches'] as $k=>$v) {
+                              if($k == $y-1) {
+                                    $getBookNum = $_SESSION['bookArray'][$k];
+                                    $$getBookNum = new Book;
+                                    // $searchData = $_SESSION['matches'][$k];
+                                    // echo "$y, $searchData, $getBookNum  <br>";
+                                    echo 
+                                    "
+                                          <tr>
+                                                <td>$y</td>
+                                    ";
+                                    for ($x = 0; $x < count($bookSubject); $x++) {
+                                          $subject = $bookSubject[$x];
+                                          // $whichBook = 'book'.$y; //concatenate string with int
+                                          $$getBookNum->$subject = $_SESSION[$subject][$y-1];
+                                          $bookInfo = $$getBookNum->$subject;
+                                          if ($x < count($bookSubject)-1) {
+                                                echo "<td>$bookInfo</td>";
+                                          } else {
+                                                $subjectAuthor = $bookSubject[$x-1];
+                                                $subjectTitle = $bookSubject[$x-2];
+                                                $bookInfoTitle = $$getBookNum->$subjectTitle;
+                                                $bookInfoAuthor = $$getBookNum->$subjectAuthor;
+                                                $bookInfoPages = $bookInfo;
+                                                $id = $y - 1;
+                                                echo 
+                                                "
+                                                      <td>$bookInfoPages</td>
+                                                      <td>
+                                                      <button type='button' class='btn btn-sm btn-info' data-toggle='modal' data-target='#modalEditBook$id'>
+                                                      Edit
+                                                      </button>
+                                                      <div class='modal fade' id='modalEditBook$id' tabindex='-1'
+                                                      role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+                                                      <div class='modal-dialog' role='document' style='max-width: 28%;'>
+                                                            <div class='modal-content' style='height: 250px;'>
+                                                                  <div class='modal-header'>
+                                                                        <h4 class='modal-title' id='exampleModalLabel'>Edit Book</h4>
+                                                                  </div>
+                                                                  <div class='modal-body'>
+                                                                  <div class='container-sm'>
+                                                                  <form action='index.php' method='POST'>
+                                                                        <input type='hidden' name='updatebookid' value='$id'>
+                                                                        <table>
+                                                                        <tr class='spaceUnder'>
+                                                                              <td style='padding-right: 25px;'>Book Title: </td>
+                                                                              <td><input type='text' name='updatebooktitle' size='45' value='$bookInfoTitle'></td>
+                                                                        </tr>
+                                                                        <tr class='spaceUnder'>
+                                                                              <td>Book Author: </td>
+                                                                              <td><input type='text' name='updatebookauthor' size='30' value='$bookInfoAuthor'></td>
+                                                                        </tr>
+                                                                        <tr class='spaceUnder'>
+                                                                              <td>Book Pages: </td>
+                                                                              <td><input type='number' name='updatebookpages' style='width: 5em' value='$bookInfoPages'></td>
+                                                                        </tr>
+                                                                        </table>
+                                                                        <table style='float: right; margin-top: 12px;'>
+                                                                        <tr>
+                                                                              <td style='padding-right: 5px;'><button type='button' class='btn btn-warning btn-sm' 
+                                                                              data-dismiss='modal' style='width: 100px;'>Cancel</button></td>
+                                                                              <td><button type='submit' class='btn btn-info btn-sm'
+                                                                              style='width: 100px;'>Update</button></td>
+                                                                        </tr>
+                                                                        </table>
+                                                                  </form>
+                                                                  </div>
+                                                                  </div>
+                                                            </div>
+                                                      </div>
+                                                      </div>
+                                                      </td>
+                                                      <td><form method='post'>
+                                                            <input type='hidden' name='delete' value='$y'>
+                                                            <input type='submit' value='delete' class='btn btn-sm btn-danger'>
+                                                      </form>
+                                                      </td>
+                                                ";
+                                          }
+                                    }
+                                    echo 
+                                    "
+                                                </tr>
                                     ";
                               }
                         }
-                        echo 
-                        "
-                                    </tr>
-                        ";
                   }
             };
       ?>
@@ -235,6 +332,22 @@
                   $_SESSION['author'][$id] = $_POST['updatebookauthor'];
                   $_SESSION['pages'][$id] = $_POST['updatebookpages'];
                   echo "<meta http-equiv='refresh' content='0'>";
+            }
+
+            if (isset($_POST['keyword'])) {
+                  $searchword = $_POST['keyword'];
+                  if ($searchword) {
+                        $_SESSION['matches'] = array();
+                        foreach($_SESSION['title'] as $k=>$v) {
+                              if(preg_match("/$searchword/i", $v)) {
+                                    $_SESSION['matches'][$k] = $v;
+                              }
+                        }
+                        echo "<meta http-equiv='refresh' content='0'>";
+                  } else {
+                        unset($_SESSION['matches']);
+                        echo "<meta http-equiv='refresh' content='0'>";
+                  }
             }
       ?>
       </div>
